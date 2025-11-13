@@ -3,42 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Earnings Impact Analysis</title>
-    <meta http-equiv="refresh" content="0; url=goog_earnings_analysis.html">
+    <title>Earnings Impact Analysis Dashboard</title>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #F9FAFB;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .loading {
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 40px 30px;
             text-align: center;
-            color: #4285F4;
         }
-        .spinner {
-            border: 4px solid #f3f4f6;
-            border-top: 4px solid #4285F4;
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 40px 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #4f46e5;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
             margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+
+        .goog { background: linear-gradient(135deg, #4285f4, #34a853); }
+        .amzn { background: linear-gradient(135deg, #ff9900, #146eb4); }
+        .msft { background: linear-gradient(135deg, #00bcff, #f35325); }
+        .spy { background: linear-gradient(135deg, #2e8b57, #32cd32); }
+        .tqqq { background: linear-gradient(135deg, #ff6b6b, #4ecdc4); }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #1f2937;
+        }
+
+        .card p {
+            color: #6b7280;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+            color: white;
+        }
+
+        .footer {
+            background: #f8fafc;
+            padding: 20px 30px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .footer a {
+            color: #4f46e5;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .card {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="loading">
-        <div class="spinner"></div>
-        <h2>Loading Google Earnings Analysis...</h2>
-        <p>If you are not redirected automatically, <a href="goog_earnings_analysis.html" style="color: #4285F4;">click here</a>.</p>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Earnings Impact Analysis</h1>
+            <p>Comprehensive analysis of earnings events and their market impact</p>
+            <div class="subtitle">Interactive dashboards with price performance, trading strategies, and valuation comparisons</div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon goog">GOOG</div>
+                <h3>Google (Alphabet)</h3>
+                <p>Deep dive into Google's quarterly earnings impact, price movements, and trading opportunities around earnings events.</p>
+                <a href="GOOG/" class="btn">View Google Analysis →</a>
+            </div>
+
+            <div class="card">
+                <div class="card-icon amzn">AMZN</div>
+                <h3>Amazon</h3>
+                <p>Analysis of Amazon's earnings reports, including e-commerce performance and cloud computing impacts.</p>
+                <a href="AMZN/" class="btn">View Amazon Analysis →</a>
+            </div>
+
+            <div class="card">
+                <div class="card-icon msft">MSFT</div>
+                <h3>Microsoft</h3>
+                <p>Comprehensive review of Microsoft's earnings, covering software, cloud services, and enterprise solutions.</p>
+                <a href="MSFT/" class="btn">View Microsoft Analysis →</a>
+            </div>
+
+            <div class="card">
+                <div class="card-icon spy">SPY</div>
+                <h3>SPDR S&P 500 ETF</h3>
+                <p>Market-wide analysis using SPY as a benchmark for overall market performance and earnings trends.</p>
+                <a href="SPY/" class="btn">View SPY Analysis →</a>
+            </div>
+
+            <div class="card">
+                <div class="card-icon tqqq">TQQQ</div>
+                <h3>ProShares UltraPro QQQ</h3>
+                <p>Leveraged ETF analysis showing amplified market movements and volatility around earnings events.</p>
+                <a href="TQQQ/" class="btn">View TQQQ Analysis →</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Built with ❤️ for quantitative finance analysis |
+            <a href="https://github.com/TheHubOfGit/earnings-analyses" target="_blank">View on GitHub</a></p>
+        </div>
     </div>
 </body>
 </html>
