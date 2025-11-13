@@ -4,139 +4,188 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earnings Impact Analysis Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --google-blue: #4285F4;
+            --google-light: #7BAFF7;
+            --google-dark: #3367D6;
+            --sp-tech-blue: #4A6FA5;
+            --sp-tech-light: #7A9BC4;
+            --neutral-gray: #6B7280;
+            --light-gray: #9CA3AF;
+            --background: #F9FAFB;
+            --text-dark: #1F2937;
+            --grid: #E5E7EB;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text-dark);
+        }
+
+        .google-blue { color: var(--google-blue); }
+        .google-bg { background-color: var(--google-blue); }
+        .google-light-bg { background-color: var(--google-light); }
+        .google-dark-bg { background-color: var(--google-dark); }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--grid);
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, var(--google-blue), var(--google-light));
+            color: white;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 24px 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, var(--google-blue), var(--google-light));
+            margin: 48px 0 32px 0;
+            border-radius: 1px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(66, 133, 244, 0.1), rgba(123, 175, 247, 0.1));
+            border-left: 4px solid var(--google-blue);
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, var(--google-blue), var(--google-light));
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(66, 133, 244, 0.3);
         }
 
         .container {
-            max-width: 1200px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            backdrop-filter: blur(10px);
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
         .header {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-            color: white;
-            padding: 40px 30px;
             text-align: center;
+            margin-bottom: 60px;
         }
 
         .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 3.5rem;
             font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 16px;
         }
 
         .header p {
             font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 20px;
+            color: var(--neutral-gray);
+            margin-bottom: 12px;
         }
 
         .subtitle {
-            font-size: 0.9rem;
-            opacity: 0.8;
+            font-size: 1rem;
+            color: var(--light-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 40px 30px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-            border-color: #4f46e5;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
         }
 
         .card-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            margin: 0 auto 20px;
+            width: 72px;
+            height: 72px;
+            border-radius: 12px;
+            margin: 0 auto 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 2rem;
             color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
-        .goog { background: linear-gradient(135deg, #4285f4, #34a853); }
-        .amzn { background: linear-gradient(135deg, #ff9900, #146eb4); }
-        .msft { background: linear-gradient(135deg, #00bcff, #f35325); }
-        .spy { background: linear-gradient(135deg, #2e8b57, #32cd32); }
-        .tqqq { background: linear-gradient(135deg, #ff6b6b, #4ecdc4); }
+        .goog {
+            background: linear-gradient(135deg, var(--google-blue), var(--google-light));
+        }
+        .amzn {
+            background: linear-gradient(135deg, #ff9900, #146eb4);
+        }
+        .msft {
+            background: linear-gradient(135deg, #00bcff, #f35325);
+        }
+        .spy {
+            background: linear-gradient(135deg, #2e8b57, #32cd32);
+        }
+        .tqqq {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+        }
 
         .card h3 {
             font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: #1f2937;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+            font-weight: 600;
         }
 
         .card p {
-            color: #6b7280;
-            margin-bottom: 20px;
-            line-height: 1.5;
+            color: var(--neutral-gray);
+            margin-bottom: 24px;
+            line-height: 1.6;
+            font-size: 0.95rem;
         }
 
         .btn {
             display: inline-block;
             padding: 12px 24px;
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            background: linear-gradient(135deg, var(--google-blue), var(--google-light));
             color: white;
             text-decoration: none;
-            border-radius: 25px;
+            border-radius: 8px;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
-            color: white;
+            box-shadow: 0 6px 20px rgba(66, 133, 244, 0.4);
         }
 
         .footer {
             background: #f8fafc;
-            padding: 20px 30px;
+            padding: 24px 20px;
             text-align: center;
-            color: #6b7280;
+            color: var(--neutral-gray);
+            margin-top: 60px;
+            border-radius: 12px;
+            border: 1px solid var(--grid);
         }
 
         .footer a {
-            color: #4f46e5;
+            color: var(--google-blue);
             text-decoration: none;
         }
 
@@ -146,69 +195,109 @@
 
         @media (max-width: 768px) {
             .header h1 {
-                font-size: 2rem;
+                font-size: 2.5rem;
             }
 
             .grid {
                 grid-template-columns: 1fr;
-                padding: 20px;
+                gap: 20px;
             }
 
-            .card {
-                padding: 20px;
+            .container {
+                padding: 20px 10px;
+            }
+
+            .header {
+                margin-bottom: 40px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>📊 Earnings Impact Analysis</h1>
-            <p>Comprehensive analysis of earnings events and their market impact</p>
-            <div class="subtitle">Interactive dashboards with price performance, trading strategies, and valuation comparisons</div>
-        </div>
-
-        <div class="grid">
-            <div class="card">
-                <div class="card-icon goog">GOOG</div>
-                <h3>Google (Alphabet)</h3>
-                <p>Deep dive into Google's quarterly earnings impact, price movements, and trading opportunities around earnings events.</p>
-                <a href="GOOG/" class="btn">View Google Analysis →</a>
-            </div>
-
-            <div class="card">
-                <div class="card-icon amzn">AMZN</div>
-                <h3>Amazon</h3>
-                <p>Analysis of Amazon's earnings reports, including e-commerce performance and cloud computing impacts.</p>
-                <a href="AMZN/" class="btn">View Amazon Analysis →</a>
-            </div>
-
-            <div class="card">
-                <div class="card-icon msft">MSFT</div>
-                <h3>Microsoft</h3>
-                <p>Comprehensive review of Microsoft's earnings, covering software, cloud services, and enterprise solutions.</p>
-                <a href="MSFT/" class="btn">View Microsoft Analysis →</a>
-            </div>
-
-            <div class="card">
-                <div class="card-icon spy">SPY</div>
-                <h3>SPDR S&P 500 ETF</h3>
-                <p>Market-wide analysis using SPY as a benchmark for overall market performance and earnings trends.</p>
-                <a href="SPY/" class="btn">View SPY Analysis →</a>
-            </div>
-
-            <div class="card">
-                <div class="card-icon tqqq">TQQQ</div>
-                <h3>ProShares UltraPro QQQ</h3>
-                <p>Leveraged ETF analysis showing amplified market movements and volatility around earnings events.</p>
-                <a href="TQQQ/" class="btn">View TQQQ Analysis →</a>
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 py-6">
+            <div class="text-center">
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">Earnings Impact Analysis</h1>
+                <p class="text-lg text-gray-600 mb-2">Comprehensive analysis of earnings events and their market impact</p>
+                <div class="text-sm text-gray-500 uppercase tracking-wide">Interactive dashboards with price performance, trading strategies, and valuation comparisons</div>
             </div>
         </div>
+    </header>
 
-        <div class="footer">
-            <p>Built with ❤️ for quantitative finance analysis |
-            <a href="https://github.com/TheHubOfGit/earnings-analyses" target="_blank">View on GitHub</a></p>
+    <!-- Navigation Bar -->
+    <nav class="bg-gray-50 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex flex-col items-center gap-3">
+                <div class="flex flex-wrap items-center justify-center gap-2 md:gap-4">
+                    <a href="GOOG/goog_earnings_analysis.html" class="nav-btn bg-white text-gray-700 px-3 py-2 md:px-6 text-sm md:text-base rounded-lg font-semibold hover:bg-gray-100 transition-colors border border-gray-200">
+                        <i class="fab fa-google mr-1 md:mr-2"></i><span class="hidden sm:inline">Google (GOOG)</span><span class="sm:hidden">GOOG</span>
+                    </a>
+                    <a href="AMZN/amzn_earnings_analysis.html" class="nav-btn bg-white text-gray-700 px-3 py-2 md:px-6 text-sm md:text-base rounded-lg font-semibold hover:bg-gray-100 transition-colors border border-gray-200">
+                        <i class="fab fa-amazon mr-1 md:mr-2"></i><span class="hidden sm:inline">Amazon (AMZN)</span><span class="sm:hidden">AMZN</span>
+                    </a>
+                    <a href="MSFT/msft_earnings_analysis.html" class="nav-btn bg-white text-gray-700 px-3 py-2 md:px-6 text-sm md:text-base rounded-lg font-semibold hover:bg-gray-100 transition-colors border border-gray-200">
+                        <i class="fab fa-microsoft mr-1 md:mr-2"></i><span class="hidden sm:inline">Microsoft (MSFT)</span><span class="sm:hidden">MSFT</span>
+                    </a>
+                    <a href="SPY/spy_performance_analysis.html" class="nav-btn bg-white text-gray-700 px-3 py-2 md:px-6 text-sm md:text-base rounded-lg font-semibold hover:bg-gray-100 transition-colors border border-gray-200">
+                        <i class="fas fa-chart-line mr-1 md:mr-2"></i><span class="hidden sm:inline">SPY</span><span class="sm:hidden">SPY</span>
+                    </a>
+                    <a href="TQQQ/tqqq_performance_analysis.html" class="nav-btn bg-white text-gray-700 px-3 py-2 md:px-6 text-sm md:text-base rounded-lg font-semibold hover:bg-gray-100 transition-colors border border-gray-200">
+                        <i class="fas fa-chart-line mr-1 md:mr-2"></i><span class="hidden sm:inline">TQQQ</span><span class="sm:hidden">TQQQ</span>
+                    </a>
+                </div>
+            </div>
         </div>
-    </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="card p-6">
+                <div class="card-icon goog"><i class="fab fa-google"></i></div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Google (Alphabet)</h3>
+                <p class="text-gray-600 mb-4">Deep dive into Google's quarterly earnings impact, price movements, and trading opportunities around earnings events.</p>
+                <a href="GOOG/goog_earnings_analysis.html" class="btn">View Analysis →</a>
+            </div>
+
+            <div class="card p-6">
+                <div class="card-icon amzn"><i class="fab fa-amazon"></i></div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Amazon</h3>
+                <p class="text-gray-600 mb-4">Analysis of Amazon's earnings reports, including e-commerce performance and cloud computing impacts.</p>
+                <a href="AMZN/amzn_earnings_analysis.html" class="btn">View Analysis →</a>
+            </div>
+
+            <div class="card p-6">
+                <div class="card-icon msft"><i class="fab fa-microsoft"></i></div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Microsoft</h3>
+                <p class="text-gray-600 mb-4">Comprehensive review of Microsoft's earnings, covering software, cloud services, and enterprise solutions.</p>
+                <a href="MSFT/msft_earnings_analysis.html" class="btn">View Analysis →</a>
+            </div>
+
+            <div class="card p-6">
+                <div class="card-icon spy"><i class="fas fa-chart-line"></i></div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">SPDR S&P 500 ETF</h3>
+                <p class="text-gray-600 mb-4">Market-wide analysis using SPY as a benchmark for overall market performance and earnings trends.</p>
+                <a href="SPY/spy_performance_analysis.html" class="btn">View Analysis →</a>
+            </div>
+
+            <div class="card p-6">
+                <div class="card-icon tqqq"><i class="fas fa-chart-line"></i></div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">ProShares UltraPro QQQ</h3>
+                <p class="text-gray-600 mb-4">Leveraged ETF analysis showing amplified market movements and volatility around earnings events.</p>
+                <a href="TQQQ/tqqq_performance_analysis.html" class="btn">View Analysis →</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            <div class="text-center text-gray-600">
+                <p>Built with ❤️ for quantitative finance analysis |
+                <a href="https://github.com/TheHubOfGit/earnings-analyses" target="_blank" class="text-blue-600 hover:text-blue-800">View on GitHub</a></p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
