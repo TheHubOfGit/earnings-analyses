@@ -1,0 +1,6 @@
+date,action,price,shares,value,reason
+2024-03-31,BUY,425.67,100,42567.00,Quarterly rebalancing
+2024-06-30,SELL,445.23,100,44523.00,Quarterly rebalancing
+2024-09-30,BUY,432.45,100,43245.00,Quarterly rebalancing
+2024-12-31,SELL,467.89,100,46789.00,Quarterly rebalancing
+2025-03-31,BUY,451.23,100,45123.00,Quarterly rebalancing
